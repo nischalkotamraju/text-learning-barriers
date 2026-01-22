@@ -49,88 +49,89 @@ export function SignUp() {
   };
 
   return (
-    <div className="shadow-input mx-auto w-full max-w-2xl rounded-none p-4 md:rounded-2xl md:p-8">
-      <h2 className="text-xl font-bold text-blue-200 mt-36">
-        Welcome! Create your account below.
-      </h2>
-      <div className="my-8 flex flex-col md:flex-row md:space-x-8">
-        <form className="flex-1" onSubmit={handleSubmit}>
-          <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+    <div className="min-h-screen flex items-center justify-center px-6">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-white mb-3">
+            Create Account
+          </h2>
+          <p className="text-white/50 text-sm">
+            Join us to start transforming your learning experience
+          </p>
+        </div>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-4">
             <LabelInputContainer>
               <Label htmlFor="firstname">
-                First Name <span className="text-red-500">*</span>
+                First Name
               </Label>
               <Input
                 id="firstname"
                 name="firstname"
-                placeholder="Tyler"
+                placeholder="John"
                 type="text"
                 required
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
               />
             </LabelInputContainer>
             <LabelInputContainer>
               <Label htmlFor="lastname">
-                Last Name <span className="text-red-500">*</span>
+                Last Name
               </Label>
               <Input
                 id="lastname"
                 name="lastname"
-                placeholder="Durden"
+                placeholder="Doe"
                 type="text"
                 required
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
               />
             </LabelInputContainer>
           </div>
-          <LabelInputContainer className="mb-4">
+          <LabelInputContainer>
             <Label htmlFor="email">
-              Email Address <span className="text-red-500">*</span>
+              Email Address
             </Label>
             <Input
               id="email"
               name="email"
-              placeholder="projectmayhem@fc.com"
+              placeholder="your@email.com"
               type="email"
               required
-              className="focus:outline-none focus:ring-0"
+              className="focus:outline-none focus:ring-0 bg-white/5 border-white/10 text-white placeholder:text-white/30"
             />
           </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
+          <LabelInputContainer>
             <Label htmlFor="password">
-              Password <span className="text-red-500">*</span>
+              Password
             </Label>
             <Input
               id="password"
               name="password"
-              placeholder="••••••••"
+              placeholder="Create a secure password"
               type="password"
               required
-              className="focus:outline-none focus:ring-0"
+              className="focus:outline-none focus:ring-0 bg-white/5 border-white/10 text-white placeholder:text-white/30"
             />
           </LabelInputContainer>
 
-          {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
+          {error && <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg p-3">{error}</div>}
           <button
-            className=" relative block h-10 w-full rounded-md font-medium text-white border border-blue-200 hover:bg-blue-200 hover:text-black duration-300"
+            className="relative block h-12 w-full rounded-full font-semibold text-black bg-white hover:bg-white/90 transition-all duration-300 hover:scale-[1.02]"
             type="submit"
             disabled={loading}
           >
-            {loading ? "Signing Up..." : "Sign Up"}
-            <BottomGradient />
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
+          <div className="text-center text-sm text-white/50">
+            Already have an account?{" "}
+            <a href="/login" className="text-white hover:underline">Log in</a>
+          </div>
         </form>
       </div>
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500" />
-      <span className="absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500" />
-    </>
-  );
-};
 
 const LabelInputContainer = ({
   children,

@@ -60,15 +60,14 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 function App() {
   return (
     <BrowserRouter>
-      <div className="relative min-h-screen bg-neutral-900">
+      <div className="relative min-h-screen bg-black">
         <div
           className={cn(
-            "absolute inset-0 z-0 pointer-events-none",
-            "[background-size:20px_20px]",
-            "[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]"
+            "absolute inset-0 z-0 pointer-events-none opacity-20",
+            "[background-size:40px_40px]",
+            "[background-image:linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)]"
           )}
         />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-100 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-neutral-900"></div>
 
         <div className="relative z-10 flex flex-col min-h-screen">
           <div className="flex-1">

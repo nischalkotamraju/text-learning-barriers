@@ -207,7 +207,10 @@ export function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-blue-200 text-xl">Loading...</div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <div className="text-white text-xl font-light">Loading...</div>
+        </div>
       </div>
     );
   }
@@ -671,33 +674,50 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
 
   return (
     <div className="min-h-screen">
-      {/* Logout Button - Top Right */}
-      <div className="absolute top-6 right-6 z-20">
-        <button
-          onClick={handleSignOut}
-          className="flex items-center space-x-2 px-4 py-2 border border-blue-200 text-blue-200 rounded-lg hover:bg-blue-200 hover:text-black transition duration-300 bg-white/10 backdrop-blur-sm"
-        >
-          <ArrowRightOnRectangleIcon className="w-4 h-4" />
-          <span>Sign Out</span>
-        </button>
-      </div>
+      {/* Top Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="text-white text-xl font-bold tracking-tight">VisualLearn</div>
+          <button
+            onClick={handleSignOut}
+            className="flex items-center space-x-2 px-4 py-2 border border-white/20 text-white rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
+          >
+            <ArrowRightOnRectangleIcon className="w-4 h-4" />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </nav>
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-24">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
-            Visual Learning Studio
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Transform text into comics, flowcharts, and infographics for better learning
-          </p>
+        <div className="mb-12 mt-8">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
+                {currentView === 'dashboard' ? 'YOUR VISUAL LIBRARY' : viewingFolder?.name.toUpperCase()}
+              </h1>
+              <p className="text-white/50 text-lg font-light">
+                {currentView === 'dashboard' 
+                  ? 'Transform text into accessible visual formats'
+                  : (
+                    <button 
+                      onClick={backToDashboard}
+                      className="text-white/70 hover:text-white transition-colors flex items-center gap-2"
+                    >
+                      ← Back to Dashboard
+                    </button>
+                  )
+                }
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Action Bar */}
-        <div className="mb-8 flex flex-wrap gap-4">
+        <div className="mb-12 flex flex-wrap gap-4">
           <button 
             onClick={() => setShowTextConverter(true)}
-            className="flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300"
+            className="flex items-center space-x-2 px-8 py-4 bg-white text-black rounded-full transition-all duration-300 hover:bg-white/90 hover:scale-105 font-semibold"
           >
             <SparklesIcon className="w-5 h-5" />
             <span>Convert Text to Visual</span>
@@ -705,53 +725,43 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
           
           <button 
             onClick={() => setShowNewFolderModal(true)}
-            className="flex items-center space-x-2 px-6 py-3 border border-blue-200 text-blue-200 hover:bg-blue-200 hover:text-black rounded-lg transition duration-300"
+            className="flex items-center space-x-2 px-8 py-4 border border-white/20 text-white rounded-full hover:bg-white/5 transition-all duration-300 font-semibold"
           >
             <PlusIcon className="w-5 h-5" />
             <span>New Folder</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Folders Section */}
-          <div className="lg:col-span-3">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold text-white">
-                {currentView === 'dashboard' ? 'Your Visual Library' : (
-                  <div className="flex items-center space-x-3">
-                    <button 
-                      onClick={backToDashboard}
-                      className="text-blue-200 hover:text-white transition-colors"
-                    >
-                      ← Back
-                    </button>
-                    <span>{viewingFolder?.name}</span>
-                  </div>
-                )}
-              </h2>
-            </div>
+        {/* Main Content Area */}
+        <div className="grid grid-cols-1 gap-8">
+          {/* Folders Grid or Folder View */}
+          <div>
+            <h2 className="text-sm font-medium text-white/50 tracking-wider uppercase mb-6">
+              {currentView === 'dashboard' ? 'Folders' : 'Visuals'}
+            </h2>
             
-            {/* Folders Grid or Folder View */}
             {currentView === 'dashboard' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {folders.length === 0 ? (
-                  <div className="col-span-full text-center py-12">
-                    <FolderIcon className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-400 text-lg mb-4">No folders yet</p>
+                  <div className="col-span-full text-center py-16">
+                    <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <FolderIcon className="w-8 h-8 text-white/30" />
+                    </div>
+                    <p className="text-white/40 text-lg mb-6">No folders yet</p>
                     <button
                       onClick={() => setShowNewFolderModal(true)}
-                      className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300"
+                      className="px-8 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-300 font-semibold"
                     >
                       Create Your First Folder
                     </button>
                   </div>
                 ) : (
                   folders.map((folder) => (
-                    <div key={folder.id} className="group bg-zinc-900 rounded-xl p-6 border border-zinc-700 hover:border-blue-200 transition-all duration-300">
+                    <div key={folder.id} className="group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
                       <div className="flex items-start justify-between mb-4">
                         <div 
                           onClick={() => openFolder(folder)}
-                          className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+                          className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-all"
                         >
                           <FolderIcon className="w-6 h-6 text-white" />
                         </div>
@@ -761,41 +771,41 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
                               e.stopPropagation();
                               openFolder(folder);
                             }}
-                            className="p-1 hover:bg-zinc-700 rounded"
+                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                             title="View Folder"
                           >
-                            <EyeIcon className="w-4 h-4 text-gray-400 hover:text-blue-400" />
+                            <EyeIcon className="w-4 h-4 text-white/60 hover:text-white" />
                           </button>
                           <button 
                             onClick={(e) => {
                               e.stopPropagation();
                               editFolder(folder);
                             }}
-                            className="p-1 hover:bg-zinc-700 rounded"
+                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                             title="Edit Folder"
                           >
-                            <PencilIcon className="w-4 h-4 text-gray-400 hover:text-yellow-400" />
+                            <PencilIcon className="w-4 h-4 text-white/60 hover:text-white" />
                           </button>
                           <button 
                             onClick={(e) => {
                               e.stopPropagation();
                               deleteItem('folder', folder);
                             }}
-                            className="p-1 hover:bg-zinc-700 rounded"
+                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                             title="Delete Folder"
                           >
-                            <TrashIcon className="w-4 h-4 text-red-400 hover:text-red-300" />
+                            <TrashIcon className="w-4 h-4 text-red-400/60 hover:text-red-400" />
                           </button>
                         </div>
                       </div>
                       <h3 
                         onClick={() => openFolder(folder)}
-                        className="text-lg font-semibold text-white mb-2 group-hover:text-blue-200 transition-colors cursor-pointer"
+                        className="text-lg font-semibold text-white mb-2 group-hover:text-white/80 transition-colors cursor-pointer"
                       >
                         {folder.name}
                       </h3>
-                      <p className="text-gray-400 text-sm">
-                        {folder.visualCount || 0} visuals • Created {formatDate(folder.createdAt)}
+                      <p className="text-white/40 text-sm">
+                        {folder.visualCount || 0} visuals • {formatDate(folder.createdAt)}
                       </p>
                     </div>
                   ))
@@ -805,59 +815,61 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
               /* Folder Content View */
               <div className="mb-8">
                 {loadingFolder ? (
-                  <div className="text-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <p className="text-gray-400">Loading folder contents...</p>
+                  <div className="text-center py-16">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+                    <p className="text-white/40">Loading folder contents...</p>
                   </div>
                 ) : folderVisuals.length === 0 ? (
-                  <div className="text-center py-12">
-                    <PhotoIcon className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-400 text-lg mb-2">No visuals in this folder yet</p>
-                    <p className="text-gray-500 text-sm mb-4">Create some visuals to see them here</p>
+                  <div className="text-center py-16">
+                    <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <PhotoIcon className="w-8 h-8 text-white/30" />
+                    </div>
+                    <p className="text-white/40 text-lg mb-2">No visuals in this folder yet</p>
+                    <p className="text-white/30 text-sm mb-6">Create some visuals to see them here</p>
                     <button
                       onClick={() => setShowTextConverter(true)}
-                      className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300"
+                      className="px-8 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-300 font-semibold"
                     >
                       Create First Visual
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {folderVisuals.map((visual) => {
                       const IconComponent = getVisualTypeIcon(visual.type);
                       return (
-                        <div key={visual.id} className="group bg-zinc-900 rounded-lg p-4 border border-zinc-700 hover:border-blue-200 transition-all duration-300">
-                          <div className="flex items-start justify-between mb-3">
+                        <div key={visual.id} className="group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                          <div className="flex items-start justify-between mb-4">
                             <div 
                               onClick={() => openVisual(visual)}
-                              className="aspect-video bg-zinc-800 rounded-lg flex items-center justify-center cursor-pointer hover:bg-zinc-700 transition-colors flex-1 mr-3"
+                              className="aspect-video bg-white/5 rounded-xl flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all flex-1 mr-3"
                             >
-                              <IconComponent className="w-8 h-8 text-gray-500" />
+                              <IconComponent className="w-8 h-8 text-white/50" />
                             </div>
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col space-y-1">
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col space-y-2">
                               <button 
                                 onClick={() => openVisual(visual)}
-                                className="p-1 hover:bg-zinc-700 rounded"
+                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 title="View Visual"
                               >
-                                <EyeIcon className="w-4 h-4 text-gray-400 hover:text-blue-400" />
+                                <EyeIcon className="w-4 h-4 text-white/60 hover:text-white" />
                               </button>
                               <button 
                                 onClick={() => deleteItem('visual', visual)}
-                                className="p-1 hover:bg-zinc-700 rounded"
+                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 title="Delete Visual"
                               >
-                                <TrashIcon className="w-4 h-4 text-red-400 hover:text-red-300" />
+                                <TrashIcon className="w-4 h-4 text-red-400/60 hover:text-red-400" />
                               </button>
                             </div>
                           </div>
                           <h4 
                             onClick={() => openVisual(visual)}
-                            className="text-white font-medium mb-1 group-hover:text-blue-200 transition-colors cursor-pointer"
+                            className="text-white font-semibold mb-2 group-hover:text-white/80 transition-colors cursor-pointer"
                           >
                             {visual.title}
                           </h4>
-                          <p className="text-gray-400 text-sm capitalize">
+                          <p className="text-white/40 text-sm capitalize">
                             {visual.type} • {formatDate(visual.createdAt)}
                           </p>
                         </div>
@@ -871,43 +883,45 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
             {/* Recent Visuals - Only show on dashboard view */}
             {currentView === 'dashboard' && (
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4">Recent Visuals</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <h2 className="text-sm font-medium text-white/50 tracking-wider uppercase mb-6">Recent Visuals</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {recentVisuals.length === 0 ? (
-                    <div className="col-span-full text-center py-8">
-                      <PhotoIcon className="w-12 h-12 text-gray-500 mx-auto mb-3" />
-                      <p className="text-gray-400">No visuals created yet</p>
-                      <p className="text-gray-500 text-sm">Start by converting some text!</p>
+                    <div className="col-span-full text-center py-12">
+                      <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <PhotoIcon className="w-6 h-6 text-white/30" />
+                      </div>
+                      <p className="text-white/40">No visuals created yet</p>
+                      <p className="text-white/30 text-sm">Start by converting some text!</p>
                     </div>
                   ) : (
                     recentVisuals.map((visual) => {
                       const IconComponent = getVisualTypeIcon(visual.type);
                       return (
-                        <div key={visual.id} className="group bg-zinc-900 rounded-lg p-4 border border-zinc-700 hover:border-blue-200 transition-all duration-300">
-                          <div className="flex items-start justify-between mb-3">
+                        <div key={visual.id} className="group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                          <div className="flex items-start justify-between mb-4">
                             <div 
                               onClick={() => openVisual(visual)}
-                              className="aspect-video bg-zinc-800 rounded-lg flex items-center justify-center cursor-pointer hover:bg-zinc-700 transition-colors flex-1 mr-3"
+                              className="aspect-video bg-white/5 rounded-xl flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all flex-1 mr-3"
                             >
-                              <IconComponent className="w-8 h-8 text-gray-500" />
+                              <IconComponent className="w-8 h-8 text-white/50" />
                             </div>
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                               <button 
                                 onClick={() => deleteItem('visual', visual)}
-                                className="p-1 hover:bg-zinc-700 rounded"
+                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                                 title="Delete Visual"
                               >
-                                <TrashIcon className="w-4 h-4 text-red-400 hover:text-red-300" />
+                                <TrashIcon className="w-4 h-4 text-red-400/60 hover:text-red-400" />
                               </button>
                             </div>
                           </div>
                           <h4 
                             onClick={() => openVisual(visual)}
-                            className="text-white font-medium mb-1 group-hover:text-blue-200 transition-colors cursor-pointer"
+                            className="text-white font-semibold mb-2 group-hover:text-white/80 transition-colors cursor-pointer"
                           >
                             {visual.title}
                           </h4>
-                          <p className="text-gray-400 text-sm capitalize">
+                          <p className="text-white/40 text-sm capitalize">
                             {visual.type} • {formatDate(visual.createdAt)}
                           </p>
                         </div>
@@ -917,47 +931,6 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-700">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                <button className="w-full text-left p-3 rounded-lg hover:bg-zinc-800 transition-colors flex items-center space-x-3">
-                  <PhotoIcon className="w-5 h-5 text-blue-200" />
-                  <span className="text-gray-300">Create Comic Strip</span>
-                </button>
-                <button className="w-full text-left p-3 rounded-lg hover:bg-zinc-800 transition-colors flex items-center space-x-3">
-                  <ChartBarIcon className="w-5 h-5 text-green-400" />
-                  <span className="text-gray-300">Make Flowchart</span>
-                </button>
-                <button className="w-full text-left p-3 rounded-lg hover:bg-zinc-800 transition-colors flex items-center space-x-3">
-                  <PuzzlePieceIcon className="w-5 h-5 text-purple-400" />
-                  <span className="text-gray-300">Design Infographic</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-700">
-              <h3 className="text-lg font-semibold text-white mb-4">Your Progress</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Visuals Created</span>
-                  <span className="text-blue-200 font-bold">15</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Folders</span>
-                  <span className="text-blue-200 font-bold">3</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Learning Hours</span>
-                  <span className="text-blue-200 font-bold">24.5</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -997,79 +970,81 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
 
         {/* Text Converter Modal */}
         {showTextConverter && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-zinc-900 rounded-xl w-full max-w-4xl border border-zinc-700 max-h-[90vh] overflow-y-auto">
-              <div className="p-6 border-b border-zinc-700">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+            <div className="bg-black border border-white/20 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="p-8 border-b border-white/10">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-semibold text-white">Text to Visual Converter</h3>
+                  <div>
+                    <h3 className="text-3xl font-bold text-white mb-2">Text to Visual Converter</h3>
+                    <p className="text-white/50">
+                      Transform your text into accessible visual formats
+                    </p>
+                  </div>
                   <button
                     onClick={() => setShowTextConverter(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-white/50 hover:text-white transition-colors"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
-                <p className="text-gray-400 mt-2">
-                  Paste your text content and choose how you'd like it visualized for better learning.
-                </p>
               </div>
               
-              <div className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   <div>
-                    <label className="block text-white font-medium mb-2">Input Text</label>
+                    <label className="block text-white font-semibold mb-3 text-sm tracking-wider uppercase">Input Text</label>
                     <textarea
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
-                      className="w-full h-64 p-3 bg-zinc-800 text-white rounded-lg border border-zinc-600 focus:border-blue-500 focus:outline-none resize-none"
+                      className="w-full h-64 p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:border-white/30 focus:outline-none resize-none placeholder:text-white/30"
                       placeholder="Paste your textbook content, notes, or any text you want to convert into a visual format..."
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-white font-medium mb-2">Visual Format</label>
-                    <div className="space-y-3 mb-4">
+                    <label className="block text-white font-semibold mb-3 text-sm tracking-wider uppercase">Visual Format</label>
+                    <div className="space-y-3 mb-6">
                       <div 
                         onClick={() => setSelectedFormat('comic')}
-                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          selectedFormat === 'comic' ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-600 hover:border-blue-500'
+                        className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                          selectedFormat === 'comic' ? 'border-white/40 bg-white/10' : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <PhotoIcon className="w-6 h-6 text-blue-400" />
+                          <PhotoIcon className="w-6 h-6 text-white" />
                           <div>
-                            <h4 className="text-white font-medium">Comic Strip</h4>
-                            <p className="text-gray-400 text-sm">Step-by-step visual story format</p>
+                            <h4 className="text-white font-semibold">Comic Strip</h4>
+                            <p className="text-white/50 text-sm">Step-by-step visual story</p>
                           </div>
                         </div>
                       </div>
                       <div 
                         onClick={() => setSelectedFormat('flowchart')}
-                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          selectedFormat === 'flowchart' ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-600 hover:border-blue-500'
+                        className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                          selectedFormat === 'flowchart' ? 'border-white/40 bg-white/10' : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <ChartBarIcon className="w-6 h-6 text-green-400" />
+                          <ChartBarIcon className="w-6 h-6 text-white" />
                           <div>
-                            <h4 className="text-white font-medium">Flowchart</h4>
-                            <p className="text-gray-400 text-sm">Process and decision flow diagram</p>
+                            <h4 className="text-white font-semibold">Flowchart</h4>
+                            <p className="text-white/50 text-sm">Process flow diagram</p>
                           </div>
                         </div>
                       </div>
                       <div 
                         onClick={() => setSelectedFormat('infographic')}
-                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          selectedFormat === 'infographic' ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-600 hover:border-blue-500'
+                        className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                          selectedFormat === 'infographic' ? 'border-white/40 bg-white/10' : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <PuzzlePieceIcon className="w-6 h-6 text-purple-400" />
+                          <PuzzlePieceIcon className="w-6 h-6 text-white" />
                           <div>
-                            <h4 className="text-white font-medium">Infographic</h4>
-                            <p className="text-gray-400 text-sm">Data and information visualization</p>
+                            <h4 className="text-white font-semibold">Infographic</h4>
+                            <p className="text-white/50 text-sm">Data visualization</p>
                           </div>
                         </div>
                       </div>
@@ -1077,12 +1052,12 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
                   </div>
                 </div>
                 
-                <div className="mb-6">
-                  <label className="block text-white font-medium mb-2">Save to Folder</label>
+                <div className="mb-8">
+                  <label className="block text-white font-semibold mb-3 text-sm tracking-wider uppercase">Save to Folder</label>
                   <select
                     value={selectedFolder}
                     onChange={(e) => setSelectedFolder(e.target.value)}
-                    className="w-full p-3 bg-zinc-800 text-white rounded-lg border border-zinc-600 focus:border-blue-500 focus:outline-none"
+                    className="w-full p-4 bg-white/5 text-white rounded-xl border border-white/10 focus:border-white/30 focus:outline-none"
                   >
                     <option value="">Select a folder...</option>
                     {folders.map((folder) => (
@@ -1096,11 +1071,11 @@ Visual Requirements: Modern, educational, EXTREMELY high-contrast, maximum acces
                 <button 
                   onClick={convertTextToVisual}
                   disabled={converting || !inputText.trim() || !selectedFolder}
-                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition duration-300 flex items-center justify-center space-x-2"
+                  className="w-full py-4 px-6 bg-white hover:bg-white/90 disabled:bg-white/20 disabled:cursor-not-allowed text-black rounded-full transition-all duration-300 flex items-center justify-center space-x-2 font-semibold"
                 >
                   {converting ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
                       <span>Converting...</span>
                     </>
                   ) : (

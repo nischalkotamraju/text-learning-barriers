@@ -24,12 +24,13 @@ export const HeroText = ({
 export const Highlight = ({ children }: { children: React.ReactNode }) => {
   return (
     <motion.span
-      className="relative inline-block px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg"
+      className="relative inline-block"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.3 }}
     >
-      {children}
+      <span className="relative z-10">{children}</span>
+      <span className="absolute inset-0 bg-white/10 blur-2xl"></span>
     </motion.span>
   );
 };
